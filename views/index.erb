@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MonzoMap</title>
+  <style>
+    #map {
+      height: 100%;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+<div id="map"></div>
+<script>
+  var map, heatmap;
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 11,
+      center: {lat: 51.509, lng: -0.105}
+    });
+
+    heatmap = new google.maps.visualization.HeatmapLayer({
+      data: getPoints(),
+      map: map
+    });
+  }
+  function getPoints() {
+    return [
+      <% points.each do |point| %>
+        new google.maps.LatLng(<%=point[0]%>, <%=point[1]%>),
+      <% end %>
+    ];
+  }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=<%=ENV['MAPS_API_KEY']%>&libraries=visualization&callback=initMap">
+</script>
+</body>
